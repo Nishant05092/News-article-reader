@@ -1,5 +1,7 @@
 Skeptical News Article Analysis Tool
 
+Paste this Google gemini api key in env folder or (create your own)-   AIzaSyCcVem-E1nzqYZhiJEvG5ir6w0YQ1XYWa
+
 *** I am providing the api key of gemini for testing make sure not to misuse it, I will delete it as soon as assesment over regards Nishant sharma***
 
 ***Overview***
