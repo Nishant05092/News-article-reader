@@ -2,7 +2,7 @@ Skeptical News Article Analysis Tool
 
 Create your Gemini API key compatible with gemini-2.5-flash model to run the ai application or DM me for API key.
 
-*** I am providing the api key of gemini for testing make sure not to misuse it, I will delete it as soon as assesment over regards Nishant sharma***
+
 
 ***Overview***
 
