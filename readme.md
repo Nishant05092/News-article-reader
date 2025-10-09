@@ -1,104 +1,170 @@
 Skeptical News Article Analysis Tool
+<p align="center"><strong>AI-powered analyzer</strong> that evaluates online news articles for credibility, tone, and red flags using Google’s Gemini models through LangChain.</p> <p align="center"> <a href="https://www.python.org/downloads/release/python-3110/"> <img alt="Python" src="https://img.shields.io/badge/python-3.11%2B-blue.svg"> </a> <a href="https://ai.google.dev/gemini-api/docs"> <img alt="Gemini API" src="https://img.shields.io/badge/Gemini%20API-2.5--flash-orange.svg"> </a> <a href="https://github.com/langchain-ai/langchain"> <img alt="LangChain" src="https://img.shields.io/badge/LangChain-Framework-green.svg"> </a> </p>
+Contents
 
-Create your Gemini API key compatible with gemini-2.5-flash model to run the ai application or DM me for API key.
+Overview
+
+Architecture
+
+Installation and Setup
+
+Prerequisites
+
+Quick Setup
+
+Configuration
+
+How it Works
+
+Directory Layout
+
+Example Output
+
+Contributing
+
+License
+
+Overview
+
+The Skeptical News Article Analysis Tool helps users critically evaluate online news articles without bias.
+It fetches article text directly from the web and uses Google’s Gemini models via LangChain to:
+
+Identify core claims and main themes.
+
+Detect tone, bias, and persuasive language.
+
+Highlight potential red flags and logical fallacies.
+
+Suggest fact-checking questions for deeper verification.
+
+Perform Named Entity Recognition (NER) to extract people, organizations, and places for further investigation.
+
+The goal is to empower users to think critically, not to judge content as true or false.
+
+Architecture
+<table> <tr> <td>
+
+Flow
+
+Load the Google Gemini API key from .env.
+
+Accept a news article URL as input.
+
+WebBaseLoader scrapes and parses the article text.
+
+PromptTemplate guides the Gemini model for structured analysis.
+
+The LangChain pipeline runs analysis and NER sequentially.
+
+Results are displayed with claims, tone, red flags, and entity insights.
+
+</td> <td>
+
+Key Modules
+
+main.py
+Entry point; orchestrates the full analysis pipeline.
+
+prompts.py
+Contains templates for critical analysis and entity recognition.
+
+loaders.py
+Handles web scraping using LangChain’s WebBaseLoader.
+
+.env
+Stores the Google API key securely.
+
+</td> </tr> </table>
+Installation and Setup
+Prerequisites
+
+Python 3.11+
+
+A valid Gemini API key (create via Google AI Studio
+)
+
+Quick Setup
+# Clone the repository
+git clone https://github.com/<your-username>/skeptical-news-analyzer.git
+cd skeptical-news-analyzer
+
+# Install dependencies
+pip install -r requirements.txt
 
 
+Then create a .env file with your API key:
 
-***Overview***
+GOOGLE_API_KEY=your_api_key_here
 
-This project is a Python-based tool that takes the URL of an online news article, fetches its content, and uses Google’s Gemini models through LangChain to perform a skeptical analysis of the article.
-The tool:
+Configuration
 
-Identifies the core claims in the article.
+You can switch between Gemini models by editing main.py:
 
-Detects tone and persuasive language.
+model_name = "gemini-2.5-flash"   # Fast and cost-efficient
+# model_name = "gemini-2.5-pro"   # More detailed and accurate
 
-Highlights potential red flags.
+How it Works
 
-Suggests verification questions for fact-checking.
+Load Environment Variables
+The script reads your API key using dotenv.
 
-Performs Named Entity Recognition (NER) to extract key people, organizations, and locations, along with investigation suggestions.
+Fetch Article
+WebBaseLoader scrapes and parses text from the provided URL.
 
-The approach allows users to evaluate the credibility of news content without making final judgments, empowering them to ask the right questions.
+Initialize Models
 
-***Features***
+gemini-2.5-flash: fast and lightweight
 
-Dynamic URL Input – Users enter the URL of the news article at runtime.
+gemini-2.5-pro: deeper NER analysis
 
-Web Scraping with WebBaseLoader – Automatically fetches the text content of the article.
+Define Prompts
 
-Critical Analysis Prompting – Uses a custom PromptTemplate to guide the LLM in producing structured output.
+Prompt 1: Analyze tone, claims, red flags, and verification questions.
 
-Named Entity Recognition (NER) – Optionally runs a separate, more accurate model for extracting key entities.
+Prompt 2: Extract named entities for deeper investigation.
 
-Chain Execution – Allows running two LangChain pipelines sequentially for different analysis purposes.
+Execute Chains
+LangChain sequentially runs both models and outputs structured insights.
 
-***Technology Stack***
+Directory Layout
+skeptical-news-analyzer/
+├── main.py
+├── prompts.py
+├── loaders.py
+├── .env
+├── requirements.txt
+└── README.md
 
-Python 3.x
+Example Output
 
-LangChain – For chaining prompts, models, and parsers.
-
-Google Generative AI API (Gemini) – For text analysis.
-
-dotenv – To manage API keys securely.
-
-langchain_community.document_loaders.WebBaseLoader – To fetch and parse online articles.
-
-***Steps or Approach the solution***
-Here’s your condensed point-wise version:
-
-1.Load Environment Variables – Store Google API key in .env and load with load_dotenv().
-
-2.User Input for URL – Use input() to accept a news article URL dynamically.
-
-3.Load Article Content – Use WebBaseLoader(url).load() to fetch and store article text.
-
-4.Initialize Models –
-
-gemini-2.5-flash for fast, cost-efficient analysis.
-
-gemini-2.5-pro for detailed, accurate entity recognition.
-
-5.Define Prompts –
-
-Prompt 1: Critical analysis (claims, tone, red flags, verification questions, entities).
-
-Prompt 2: Entity recognition only.
-
-6.Create LangChain Pipelines – Build chains using prompt | model | parser and invoke with article text.
-
-7.Sequential Execution – Optionally run both chains if high entity accuracy is required.
-
-
-***How to run***
-Install dependencies:
-
-pip install langchain langchain_community langchain_google_genai python-dotenv
-
-
-Create a .env file with your Google API key.
-
-Run the script:
-
-python main.py
-
-
-Enter a news article URL when prompted.
-
-***Output example***
 Core Claims:
-- XYZ happened due to ABC.
+
+The article claims that XYZ happened due to ABC.
 
 Tone Analysis:
-The article uses emotionally charged words like "catastrophic"...
+
+Uses emotionally charged language such as “catastrophic” and “shocking”.
 
 Potential Red Flags:
-- Relies on a single anonymous source.
+
+Relies heavily on unnamed sources.
 
 Verification Questions:
-- Can I find other reports from reputable outlets?
 
-Entity Recognition:
-- John Doe (Investigate past work)
-- The XYZ Institute (Look into funding sources)
+Can this be confirmed by another credible outlet?
+
+Entities:
+
+John Doe — Investigate past statements.
+
+XYZ Institute — Check funding transparency.
+
+Contributing
+
+Contributions are welcome!
+Fork the repo, create a branch, make your changes, and submit a pull request.
+Feel free to DM for collaboration or to request an API key for testing.
+
+License
+
+This project is licensed under the MIT License.
